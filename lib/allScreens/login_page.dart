@@ -2,7 +2,7 @@ import 'package:chat_chat/allProviders/auth_provider.dart';
 import 'package:chat_chat/allScreens/home_page.dart';
 import 'package:chat_chat/allWidgets/loading_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_toast_message/flutter_toast_message.dart';
+// import 'package:flutter_toast_message/flutter_toast_message.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 

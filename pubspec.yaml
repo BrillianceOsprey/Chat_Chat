@@ -22,8 +22,13 @@ dependencies:
   google_sign_in: ^6.0.1
   firebase_storage: ^11.0.14
   provider: ^6.0.5
-  flutter_toast_message: ^0.0.1
+  # flutter_toast_message: ^0.0.1
   fluttertoast: ^8.2.1
+  image_picker: ^0.8.6+3
+  intl: ^0.17.0
+  flutter_local_notifications: ^8.2.0
+  url_launcher: ^6.1.10
+  # country_code_picker: ^2.0.2
 
 dev_dependencies:
   flutter_test:
