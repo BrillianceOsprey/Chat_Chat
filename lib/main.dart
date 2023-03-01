@@ -1,5 +1,6 @@
 import 'package:chat_chat/allConstants/app_constants.dart';
 import 'package:chat_chat/allProviders/auth_provider.dart';
+import 'package:chat_chat/allProviders/home_provider.dart';
 import 'package:chat_chat/allProviders/setting_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,6 +51,11 @@ class MyApp extends StatelessWidget {
             prefs: prefs,
             firebaseFirestore: firebaseFirestore,
             firebaseStorage: firebaseStorage,
+          ),
+        ),
+        Provider<HomeProvider>(
+          create: (_) => HomeProvider(
+            firebaseFirestore: firebaseFirestore,
           ),
         ),
       ],
