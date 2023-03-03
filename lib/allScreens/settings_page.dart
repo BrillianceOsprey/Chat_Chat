@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:chat_chat/allConstants/app_constants.dart';
-import 'package:chat_chat/allConstants/color_constants.dart';
 import 'package:chat_chat/allConstants/constants.dart';
 import 'package:chat_chat/allModels/user_chat.dart';
 import 'package:chat_chat/allProviders/setting_provider.dart';
@@ -50,7 +49,7 @@ class SettingsPageState extends StatefulWidget {
 class _SettingsPageStateState extends State<SettingsPageState> {
   late final FlCountryCodePicker countryPicker;
   CountryCode? countryCode;
-  Country? country;
+  Country? country1;
   TextEditingController? controllerNickName;
   TextEditingController? controllerAboutMe;
   String dailCodeDitgits = "";
@@ -80,10 +79,10 @@ class _SettingsPageStateState extends State<SettingsPageState> {
   void pickCountry() {
     showCountryPicker(
         context: context,
-        onSelect: (Country _country) {
+        onSelect: (Country country) {
           setState(() {
-            country = _country;
-            dailCodeDitgits = country!.phoneCode;
+            country1 = country;
+            dailCodeDitgits = country1!.phoneCode;
             Logger.i('Flag', dailCodeDitgits);
           });
         });
@@ -108,6 +107,7 @@ class _SettingsPageStateState extends State<SettingsPageState> {
     ImagePicker imagePicker = ImagePicker();
     PickedFile? pickedFile = await imagePicker
         .getImage(source: ImageSource.gallery)
+        // ignore: body_might_complete_normally_catch_error
         .catchError((err) {
       Fluttertoast.showToast(msg: err.toString());
     });
@@ -235,7 +235,7 @@ class _SettingsPageStateState extends State<SettingsPageState> {
                                 },
                                 loadingBuilder: (cxt, child, loadingProgress) {
                                   if (loadingProgress == null) return child;
-                                  return Container(
+                                  return SizedBox(
                                     width: 90,
                                     height: 90,
                                     child: CircularProgressIndicator(

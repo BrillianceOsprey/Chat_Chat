@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class Utilities {
   static bool isKeyBoardShowing() {
+    // ignore: unnecessary_null_comparison
     if (WidgetsBinding.instance != null) {
       return WidgetsBinding.instance.window.viewInsets.bottom > 0;
     } else {

@@ -27,6 +27,12 @@ class _LoginPageState extends State<LoginPage> {
       case Status.authenticated:
         Fluttertoast.showToast(msg: 'Sign in success');
         break;
+      case Status.unintialized:
+        // TODO: Handle this case.
+        break;
+      case Status.authenticating:
+        // TODO: Handle this case.
+        break;
     }
 
     return Scaffold(

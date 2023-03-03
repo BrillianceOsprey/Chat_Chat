@@ -30,6 +30,7 @@ class ChatPage extends StatefulWidget {
       required this.peerNickName});
 
   @override
+  // ignore: no_logic_in_create_state
   State<ChatPage> createState() => ChatPageState(
         peerId: peerId,
         peerAvatar: peerAvatar,
@@ -49,10 +50,10 @@ class ChatPageState extends State<ChatPage> {
   String peerNickName;
   late String currentUserId;
 
-  List<QueryDocumentSnapshot> ListMessage = List.from([]);
+  List<QueryDocumentSnapshot> listMessage = List.from([]);
 
   int _limit = 20;
-  int _limitIncrement = 20;
+  int limitIncrement = 20;
   String groupChatId = "";
   File? imageFile;
   bool isLoading = false;
@@ -81,7 +82,7 @@ class ChatPageState extends State<ChatPage> {
             listScrollCotroller.position.maxScrollExtent &&
         !listScrollCotroller.position.outOfRange) {
       setState(() {
-        _limit = _limitIncrement;
+        _limit = limitIncrement;
       });
     }
   }
@@ -184,7 +185,7 @@ class ChatPageState extends State<ChatPage> {
 
   bool isLastMessageLeft(int index) {
     if ((index > 0 &&
-            ListMessage[index - 1].get(FirestoreConstants.idFrom) ==
+            listMessage[index - 1].get(FirestoreConstants.idFrom) ==
                 currentUserId) ||
         index == 0) {
       return true;
@@ -195,7 +196,7 @@ class ChatPageState extends State<ChatPage> {
 
   bool isLastMessageRight(int index) {
     if ((index > 0 &&
-            ListMessage[index - 1].get(FirestoreConstants.idFrom) !=
+            listMessage[index - 1].get(FirestoreConstants.idFrom) !=
                 currentUserId) ||
         index == 0) {
       return true;
@@ -438,27 +439,25 @@ class ChatPageState extends State<ChatPage> {
             ),
           ),
           Flexible(
-            child: Container(
-              child: TextField(
-                onSubmitted: (value) {
-                  onSendMessage(
-                    textEditingController.text,
-                    TypeMessage.text,
-                  );
-                },
-                style: const TextStyle(
-                  color: ColorConstants.primaryColor,
-                  fontSize: 15,
-                ),
-                controller: textEditingController,
-                decoration: const InputDecoration.collapsed(
-                  hintText: 'Type your message...',
-                  hintStyle: TextStyle(
-                    color: ColorConstants.greyColor,
-                  ),
-                ),
-                focusNode: focusNode,
+            child: TextField(
+              onSubmitted: (value) {
+                onSendMessage(
+                  textEditingController.text,
+                  TypeMessage.text,
+                );
+              },
+              style: const TextStyle(
+                color: ColorConstants.primaryColor,
+                fontSize: 15,
               ),
+              controller: textEditingController,
+              decoration: const InputDecoration.collapsed(
+                hintText: 'Type your message...',
+                hintStyle: TextStyle(
+                  color: ColorConstants.greyColor,
+                ),
+              ),
+              focusNode: focusNode,
             ),
           ),
           Material(
@@ -797,7 +796,7 @@ class ChatPageState extends State<ChatPage> {
               stream: chatProvider.getChatStream(groupChatId, _limit),
               builder: (cxt, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasData) {
-                  ListMessage.addAll(snapshot.data!.docs);
+                  listMessage.addAll(snapshot.data!.docs);
                   return ListView.builder(
                     itemCount: snapshot.data?.docs.length,
                     reverse: true,

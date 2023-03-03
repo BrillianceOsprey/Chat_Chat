@@ -2,8 +2,6 @@ import 'package:chat_chat/allConstants/app_constants.dart';
 import 'package:chat_chat/allConstants/color_constants.dart';
 import 'package:chat_chat/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:photo_view/photo_view.dart';
 
 class FullPhotoPage extends StatelessWidget {
@@ -25,10 +23,8 @@ class FullPhotoPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        child: PhotoView(
-          imageProvider: NetworkImage(url),
-        ),
+      body: PhotoView(
+        imageProvider: NetworkImage(url),
       ),
     );
   }

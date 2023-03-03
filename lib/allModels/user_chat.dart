@@ -1,9 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 
 import 'package:chat_chat/allConstants/constants.dart';
+import 'package:chat_chat/appCoreFeatures/logger.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class UserChat {
   String id;
@@ -52,16 +51,24 @@ class UserChat {
 
     try {
       aboutMe = doc.get(FirestoreConstants.aboutMe);
-    } catch (e) {}
+    } catch (e) {
+      Logger.clap('tag', e.toString());
+    }
     try {
       photoUrl = doc.get(FirestoreConstants.photoUrl);
-    } catch (e) {}
+    } catch (e) {
+      Logger.clap('tag', e.toString());
+    }
     try {
       nickName = doc.get(FirestoreConstants.nickname);
-    } catch (e) {}
+    } catch (e) {
+      Logger.clap('tag', e.toString());
+    }
     try {
       phoneNumber = doc.get(FirestoreConstants.phoneNumber);
-    } catch (e) {}
+    } catch (e) {
+      Logger.clap('tag', e.toString());
+    }
     return UserChat(
       id: doc.id,
       photoUrl: photoUrl,

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:chat_chat/allConstants/color_constants.dart';
 import 'package:chat_chat/allConstants/constants.dart';
 import 'package:chat_chat/allModels/user_chat.dart';
 import 'package:chat_chat/allScreens/chat_page.dart';
@@ -39,14 +38,14 @@ class _HomePageState extends State<HomePage> {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final ScrollController listScrollController = ScrollController();
   int _limit = 20;
-  int _limitIncrement = 20;
+  int limitIncrement = 20;
   String _textSearch = "";
   bool isLoading = false;
 
   String currentUserId = "";
   late AuthProvider authProvider;
   late HomeProvider homeProvider;
-  Debouncer SearchDebouncer = Debouncer(milliseconds: 300);
+  Debouncer searchDebouncer = Debouncer(milliseconds: 300);
   StreamController<bool> btnClearController = StreamController<bool>();
   TextEditingController searchBarTec = TextEditingController();
   List<PopupChoices> choices = <PopupChoices>[
@@ -69,7 +68,7 @@ class _HomePageState extends State<HomePage> {
             listScrollController.position.maxScrollExtent &&
         !listScrollController.position.outOfRange) {
       setState(() {
-        _limit += _limitIncrement;
+        _limit += limitIncrement;
       });
     }
   }
@@ -501,7 +500,7 @@ class _HomePageState extends State<HomePage> {
                           height: 50,
                           loadingBuilder: (cxt, child, loadingProgress) {
                             if (loadingProgress == null) return child;
-                            return Container(
+                            return SizedBox(
                               width: 50,
                               height: 50,
                               child: CircularProgressIndicator(
