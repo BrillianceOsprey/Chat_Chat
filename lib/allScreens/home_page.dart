@@ -12,7 +12,10 @@ import 'package:chat_chat/appCoreFeatures/logger.dart';
 import 'package:chat_chat/main.dart';
 import 'package:chat_chat/utilities/debouncer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +32,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final FirebaseMessaging fireBaseMessaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final ScrollController listScrollController = ScrollController();
   int _limit = 20;
@@ -229,7 +236,72 @@ class _HomePageState extends State<HomePage> {
           MaterialPageRoute(builder: (cxt) => const LoginPage()),
           (route) => false);
     }
+    registerNofitication();
+    configureLocalNotification();
     listScrollController.addListener(() {});
+  }
+
+  void registerNofitication() {
+    fireBaseMessaging.requestPermission();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      if (message.notification != null) {
+        // show notification
+        showNotification(message.notification!);
+      }
+      return;
+    });
+    fireBaseMessaging.getToken().then((token) {
+      if (token != null) {
+        homeProvider.updateDataFirestore(
+          FirestoreConstants.pathUserCollection,
+          currentUserId,
+          {'pushToken': token},
+        );
+      }
+    }).catchError((error) {
+      Fluttertoast.showToast(
+        msg: error.toString(),
+      );
+    });
+  }
+
+  void configureLocalNotification() {
+    AndroidInitializationSettings androidInitializationSettings =
+        const AndroidInitializationSettings("app_icon");
+    DarwinInitializationSettings darwinInitializationSettings =
+        const DarwinInitializationSettings();
+    InitializationSettings initializationSettings = InitializationSettings(
+      android: androidInitializationSettings,
+      iOS: darwinInitializationSettings,
+    );
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  void showNotification(RemoteNotification remoteNotification) async {
+    AndroidNotificationDetails androidNotificationDetails =
+        const AndroidNotificationDetails(
+      "com.example.chat_chat",
+      "Chat Chat App",
+      playSound: true,
+      enableVibration: true,
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    DarwinNotificationDetails darwinNotificationDetails =
+        const DarwinNotificationDetails();
+
+    NotificationDetails notificationDetails = NotificationDetails(
+      android: androidNotificationDetails,
+      iOS: darwinNotificationDetails,
+    );
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      remoteNotification.title,
+      remoteNotification.body,
+      notificationDetails,
+      payload: null,
+    );
   }
 
   @override
