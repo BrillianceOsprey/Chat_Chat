@@ -122,8 +122,9 @@ class ChatPageState extends State<ChatPage> {
   //
   Future getImage() async {
     ImagePicker imagePicker = ImagePicker();
-    PickedFile? pickedFile;
-    pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
+    XFile? pickedFile;
+    // pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
+    pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       imageFile = File(pickedFile.path);
       if (imageFile != null) {
@@ -137,7 +138,9 @@ class ChatPageState extends State<ChatPage> {
 
   Future upLoadFile() async {
     String fileName = DateTime.now().microsecondsSinceEpoch.toString();
+    Logger.clap('Chat Page file name', fileName);
     UploadTask uploadTask = chatProvider.uploadFile(imageFile!, fileName);
+    Logger.clap('Chat Page image file', imageFile);
     try {
       TaskSnapshot snapshot = await uploadTask;
       imageUrl = await snapshot.ref.getDownloadURL();
@@ -163,6 +166,8 @@ class ChatPageState extends State<ChatPage> {
         currentUserId,
         peerId,
       );
+      Logger.clap('Chat Page type', type);
+      Logger.clap('Chat Page content', content);
       listScrollCotroller.animateTo(
         0,
         duration: const Duration(milliseconds: 300),
@@ -177,6 +182,7 @@ class ChatPageState extends State<ChatPage> {
   }
 
   void getSticker() {
+    Logger.clap('Chat Page get Sticker', 'get Sticker');
     focusNode.unfocus();
     setState(() {
       isShowSticker = !isShowSticker;
@@ -412,6 +418,7 @@ class ChatPageState extends State<ChatPage> {
           color: Colors.white),
       child: Row(
         children: [
+          // get image button
           Material(
             color: Colors.white,
             child: Container(
@@ -425,6 +432,7 @@ class ChatPageState extends State<ChatPage> {
               ),
             ),
           ),
+          // get sticker
           Material(
             color: Colors.white,
             child: Container(
@@ -438,6 +446,7 @@ class ChatPageState extends State<ChatPage> {
               ),
             ),
           ),
+          // type your message
           Flexible(
             child: TextField(
               onSubmitted: (value) {
@@ -460,6 +469,7 @@ class ChatPageState extends State<ChatPage> {
               focusNode: focusNode,
             ),
           ),
+          // send message button
           Material(
             color: Colors.white,
             child: Container(
@@ -483,6 +493,9 @@ class ChatPageState extends State<ChatPage> {
     if (document != null) {
       MessageChat messageChat = MessageChat.fromDocument(document);
       if (messageChat.idFrom == currentUserId) {
+        Logger.clap('Chat Page messageChat.type', messageChat.type);
+        var data = MessageChat.fromDocument(document);
+        Logger.i('Chat page messageList data11', data.content);
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -599,6 +612,7 @@ class ChatPageState extends State<ChatPage> {
           ],
         );
       } else {
+        Logger.clap('Chat page messageList data peerAvatar', peerAvatar);
         return Container(
           margin: const EdgeInsets.only(bottom: 10),
           child: Column(
@@ -614,6 +628,7 @@ class ChatPageState extends State<ChatPage> {
                           clipBehavior: Clip.hardEdge,
                           child: Image.network(
                             peerAvatar,
+                            // 'https://lh3.googleusercontent.com/a/AGNmyxYKd5jZPbYPvg78guachjaL3nfokfIL9xrW21xP=s96-c',
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) return child;
                               return Center(
@@ -797,6 +812,9 @@ class ChatPageState extends State<ChatPage> {
               builder: (cxt, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasData) {
                   listMessage.addAll(snapshot.data!.docs);
+                  DocumentSnapshot data = listMessage.last;
+                  Logger.w('Chat page messageList data buildMessage',
+                      MessageChat.fromDocument(data));
                   return ListView.builder(
                     itemCount: snapshot.data?.docs.length,
                     reverse: true,

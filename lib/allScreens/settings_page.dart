@@ -105,8 +105,8 @@ class _SettingsPageStateState extends State<SettingsPageState> {
 
   Future getImage() async {
     ImagePicker imagePicker = ImagePicker();
-    PickedFile? pickedFile = await imagePicker
-        .getImage(source: ImageSource.gallery)
+    XFile? pickedFile = await imagePicker
+        .pickImage(source: ImageSource.gallery)
         // ignore: body_might_complete_normally_catch_error
         .catchError((err) {
       Fluttertoast.showToast(msg: err.toString());
@@ -132,6 +132,7 @@ class _SettingsPageStateState extends State<SettingsPageState> {
     try {
       TaskSnapshot snapshot = await uploadTask;
       photoUrl = await snapshot.ref.getDownloadURL();
+      Logger.e('Aboutme uploadFile', aboutMe);
       UserChat updateInfo = UserChat(
         id: id,
         photoUrl: photoUrl,
@@ -162,10 +163,12 @@ class _SettingsPageStateState extends State<SettingsPageState> {
   }
 
   void handleUpdatedData() {
+    Logger.clap('Aboutme handleUpdatedData', 'called(*)');
     focusNodeNickname.unfocus();
     focusNodeAboutMe.unfocus();
 
     setState(() {
+      Logger.clap('Aboutme isloading', isLoading);
       isLoading = true;
       if (dailCodeDitgits != "+59" && _controller.text != "") {
         phoneNumber = '+${dailCodeDitgits + _controller.text.toString()}';

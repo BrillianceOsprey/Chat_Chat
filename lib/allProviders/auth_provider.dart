@@ -62,6 +62,7 @@ class AuthProvider extends ChangeNotifier {
       if (firebaseUser != null) {
         final QuerySnapshot result = await firebaseFirestore
             .collection(FirestoreConstants.pathUserCollection)
+            // .collection('mhd_users')
             .where(FirestoreConstants.id, isEqualTo: firebaseUser.uid)
             .get();
 

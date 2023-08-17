@@ -15,22 +15,22 @@ dependencies:
   # cached data
   shared_preferences: ^2.0.18
   # firebase set up
-  firebase_core: ^2.7.0
-  firebase_auth: ^4.2.9
-  cloud_firestore: ^4.4.3
-  firebase_messaging: ^14.2.5
-  google_sign_in: ^6.0.1
-  firebase_storage: ^11.0.14
+  firebase_core: ^2.15.1
+  firebase_auth: ^4.7.3
+  cloud_firestore: ^4.8.5
+  firebase_messaging: ^14.6.6
+  google_sign_in: ^6.1.4
+  firebase_storage: ^11.2.6
   provider: ^6.0.5
   # flutter_toast_message: ^0.0.1
-  fluttertoast: ^8.2.1
-  image_picker: ^0.8.6+3
+  fluttertoast: ^8.2.2
+  image_picker: ^1.0.2
   photo_view: ^0.14.0
-  intl: ^0.17.0
-  fl_country_code_picker: ^0.1.2
-  flutter_local_notifications: ^13.0.0
+  intl: any
+  fl_country_code_picker: ^0.1.5
+  flutter_local_notifications: ^15.1.0+1
   url_launcher: ^6.1.10
-  country_picker: ^2.0.19
+  country_picker: ^2.0.20
 
 dev_dependencies:
   flutter_test:

@@ -1,0 +1,3 @@
+uploadFile 
+   Reference reference => firebaseStorage.ref().child(fileName);
+   UploadTask uploadTask => reference.putFile(image);
