@@ -238,6 +238,7 @@ class ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    Logger.d('groupChatId groupChatId', groupChatId);
     return Scaffold(
       backgroundColor: isWhite ? Colors.white : Colors.black,
       appBar: AppBar(
@@ -557,8 +558,8 @@ class ChatPageState extends State<ChatPage> {
                                       Radius.circular(8),
                                     ),
                                   ),
-                                  width: 200,
-                                  height: 200,
+                                  width: 100,
+                                  height: 100,
                                   child: Center(
                                     child: CircularProgressIndicator(
                                       color: ColorConstants.themeColor,
@@ -584,15 +585,15 @@ class ChatPageState extends State<ChatPage> {
                                       Radius.circular(8)),
                                   child: Image.asset(
                                     'images/img_not_available.jpeg',
-                                    width: 200,
-                                    height: 200,
+                                    width: 100,
+                                    height: 100,
                                     fit: BoxFit.cover,
                                   ),
                                 );
                               },
-                              width: 200,
-                              height: 200,
-                              fit: BoxFit.cover,
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),
@@ -806,15 +807,23 @@ class ChatPageState extends State<ChatPage> {
 
   Widget buildListMessage() {
     return Flexible(
-      child: groupChatId.isNotEmpty
-          ? StreamBuilder<QuerySnapshot>(
+      child: groupChatId.isEmpty
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: ColorConstants.themeColor,
+              ),
+            )
+          : StreamBuilder<QuerySnapshot>(
               stream: chatProvider.getChatStream(groupChatId, _limit),
               builder: (cxt, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasData) {
-                  listMessage.addAll(snapshot.data!.docs);
-                  DocumentSnapshot data = listMessage.last;
-                  Logger.w('Chat page messageList data buildMessage',
-                      MessageChat.fromDocument(data));
+                  Logger.w('Chat page messageList data snapshot.hasData',
+                      snapshot.hasData);
+                  listMessage.addAll(snapshot.data?.docs ?? []);
+                  // DocumentSnapshot? data =
+                  //     listMessage.isEmpty ? null : listMessage.last;
+                  // Logger.w('Chat page messageList data buildMessage',
+                  //     MessageChat.fromDocument(data));
                   return ListView.builder(
                     itemCount: snapshot.data?.docs.length,
                     reverse: true,
@@ -830,11 +839,6 @@ class ChatPageState extends State<ChatPage> {
                   );
                 }
               },
-            )
-          : const Center(
-              child: CircularProgressIndicator(
-                color: ColorConstants.themeColor,
-              ),
             ),
     );
   }
