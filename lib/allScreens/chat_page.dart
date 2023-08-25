@@ -494,7 +494,7 @@ class ChatPageState extends State<ChatPage> {
     if (document != null) {
       MessageChat messageChat = MessageChat.fromDocument(document);
       if (messageChat.idFrom == currentUserId) {
-        Logger.clap('Chat Page messageChat.type', messageChat.type);
+        Logger.clap('Chat Page messageChat', messageChat.toJson());
         var data = MessageChat.fromDocument(document);
         Logger.i('Chat page messageList data11', data.content);
         return Row(
@@ -817,13 +817,11 @@ class ChatPageState extends State<ChatPage> {
               stream: chatProvider.getChatStream(groupChatId, _limit),
               builder: (cxt, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasData) {
-                  Logger.w('Chat page messageList data snapshot.hasData',
-                      snapshot.hasData);
+                  Logger.w(
+                      'Chat page messageList data snapshot.data?.docs.length',
+                      snapshot.data?.docs.length);
                   listMessage.addAll(snapshot.data?.docs ?? []);
-                  // DocumentSnapshot? data =
-                  //     listMessage.isEmpty ? null : listMessage.last;
-                  // Logger.w('Chat page messageList data buildMessage',
-                  //     MessageChat.fromDocument(data));
+
                   return ListView.builder(
                     itemCount: snapshot.data?.docs.length,
                     reverse: true,
